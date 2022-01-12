@@ -1,3 +1,1 @@
-function key_message(number_id){
-	
-}
+console.log('Hello World')
