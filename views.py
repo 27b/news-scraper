@@ -15,7 +15,7 @@ class IndexView(MethodView):
 class PostView(MethodView):
     """Returns post data by id."""
 
-    def get(self, post_id: int = None):
+    def get(self, post_id: int = None) -> dict:
         if post_id:
             return {'id': post_id}
         return {

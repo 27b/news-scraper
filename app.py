@@ -13,7 +13,6 @@ app.config['SECRET_KEY'] = getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = eval(getenv('TRACK_MODIFICATIONS'))
 app.config['DEBUG'] = eval(getenv('DEBUG_MODE'))
-
 db = SQLAlchemy(app=app)
 migrate = Migrate(app=app, db=db)
 
