@@ -3,29 +3,28 @@ from time import sleep
 
 
 scraper = AutoScraper()
-
 url = 'https://www.nytimes.com/section/business/economy'
 
 
 if __name__ == '__main__':
-    first_message = input('You can load "nytimes-memory"? Y/n: ')
-    if first_message == 'y' or first_message == 'Y':
-        scraper.load('memory/nytimes-economy')
-        result = scraper.build(url)
-        sleep(1)
-        for r in result:
-            print(f'USING MEMORY: {r}')
-    else:
-        wanted_list = [
-            "Inflation is too high, President Biden’s pick for Fed vice chair says as her nomination hearing begins.",
-            "Lael Brainard, the Federal Reserve governor who President Biden nominated for vice chair, said the central bank is focused on getting price gains back down.",
-            "Jeanna Smialek"
-        ]
-        result = scraper.build(url, wanted_list)
-        sleep(1)
-        for r in result:
-            print(f'NOT USING MEMORY: {r}')
+    wanted_dict = {
+        'title': ["Inflation is too high, President Biden’s pick for Fed vice chair says as her nomination hearing begins."],
+        'description': ["Lael Brainard, the Federal Reserve governor who President Biden nominated for vice chair, said the central bank is focused on getting price gains back down."],
+        'author': ["Jeanna Smialek"]
+    }
+    # Run scraper
+    scraper.build(url, wanted_dict=wanted_dict)
 
-    second_message = input('You can save the model? Y/n: ')
-    if second_message == 'y' or second_message == 'Y':
-        scraper.save('memory/nytimes-economy')
+    # group and organize results
+    r = scraper.get_result_similar(
+        url, keep_order=True, grouped=True, group_by_alias=True
+    )
+
+    # Separate results
+    r_zip = list(zip(r['title'], r['description'], r['author']))
+
+    items = [
+        {'title': i[0], 'description': i[1], 'author': i[2]} for i in r_zip
+    ]
+
+    print(items)
