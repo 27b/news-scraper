@@ -1,6 +1,7 @@
 from flask import render_template, jsonify
 from flask.views import MethodView
-
+from models import Post, PostSchema
+import json
 
 class IndexView(MethodView):
     """
@@ -16,13 +17,22 @@ class PostView(MethodView):
     """Returns post data by id."""
 
     def get(self, post_id: int = None) -> dict:
-        if post_id:
-            return {'id': post_id}
-        return {
-            'posts': [
-                {'id': 1},
-                {'id': 2},
-                {'id': 3}
-            ]
-        }
+        post_schema = PostSchema()
+        posts_schema = PostSchema(many=True)
 
+        if post_id:
+            post = Post.query.filter_by(id=post_id).first()
+            if post:
+                return post_schema.dump(post)
+            return {'message': 'Post does not exists.'}
+
+        posts = Post.query.all()
+        return {'posts': posts_schema.dumps(posts)}
+
+
+class TestView(MethodView):
+    """This is a View for testing the database."""
+
+    def get(self):
+        posts = Post.query.all()
+        return posts.dump()

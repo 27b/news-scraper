@@ -1,5 +1,9 @@
-from app import db
 from datetime import datetime as dt
+from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields
+
+
+db = SQLAlchemy()
 
 
 class Newsletter(db.Model):
@@ -34,3 +38,10 @@ class Post(db.Model):
 
     def __str__(self):
         return self.title
+
+
+class PostSchema(Schema):
+    title = fields.Str()
+    description = fields.Str()
+    author = fields.Str()
+    datetime = fields.Date()

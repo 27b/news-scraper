@@ -1,6 +1,6 @@
 from abc import ABC,  abstractmethod
 
-from scraper import IScraper
+from crawler.core.scraper import IScraper
 
 
 class ISpider(ABC):
@@ -22,18 +22,20 @@ class BasicSpider(ISpider):
 
     def __init__(self, scraper: IScraper):
         self.scraper = scraper
-        self.result = None
+        self.results_of_categories = None
 
-    async def execute_scraper(self, newsletter: dict) -> None:
+    def execute_scraper(self, newsletter: dict) -> None:
         """Run the low level abstraction of the scraper library."""
-        result = []
+        result = None
 
         for category in newsletter['categories']:
-            for url in category:
+            print(f'Category: {category}')
+            for url in newsletter['categories'][category]:
+                print(f' * URL: {url}')
                 wanted_list = newsletter['wanted_list']
                 page = self.scraper.execute(url, wanted_list, category)
-                result.append(page)
-        self.result = result
+                result = page
+        self.results_of_categories = result
 
     def result(self) -> list[dict]:
-        return self.result
+        return self.results_of_categories

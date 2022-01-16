@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 from autoscraper import AutoScraper
 
 
@@ -15,13 +14,13 @@ class IScraper(ABC):
 class AutoScraperScraper(IScraper):
     """Interface of AutoScraper module."""
 
-    async def execute(self, url: str, values: dict, category: str) -> list[dict]:
+    def execute(self, url: str, values: dict, category: str) -> list[dict]:
         """Execute AutoScraper with the config and returns the result."""
         scraper = AutoScraper()
-        await scraper.build(url, wanted_dict=values)
+        scraper.build(url, wanted_dict=values)
 
         # group and organize results
-        v = await scraper.get_result_similar(
+        v = scraper.get_result_similar(
             url, keep_order=True, grouped=True, group_by_alias=True
         )
 
