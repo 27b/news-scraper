@@ -1,7 +1,7 @@
-from flask import render_template, jsonify
+from flask import render_template
 from flask.views import MethodView
 from models import Post, PostSchema
-import json
+
 
 class IndexView(MethodView):
     """
@@ -10,6 +10,10 @@ class IndexView(MethodView):
     """
 
     def get(self):
+        """
+        Return a page, and coming soon use Jinja for render the view with the
+        last posts.
+        """
         return render_template('index.html')
 
 
@@ -28,11 +32,3 @@ class PostView(MethodView):
 
         posts = Post.query.all()
         return {'posts': posts_schema.dumps(posts)}
-
-
-class TestView(MethodView):
-    """This is a View for testing the database."""
-
-    def get(self):
-        posts = Post.query.all()
-        return posts.dump()

@@ -3,8 +3,8 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from multiprocessing import Process
 from crawler.crawler import Crawler
-from models import db, Newsletter, Category, Post
-from views import IndexView, PostView, TestView
+from models import db, Newsletter, Category
+from views import IndexView, PostView
 from dotenv import load_dotenv
 from os import getenv
 
@@ -25,7 +25,6 @@ ma = Marshmallow(app)
 app.add_url_rule('/', view_func=IndexView.as_view('index'))
 app.add_url_rule('/post/', view_func=PostView.as_view('posts'))
 app.add_url_rule('/post/<int:post_id>', view_func=PostView.as_view('post'))
-app.add_url_rule('/test/', view_func=TestView.as_view('tests'))
 
 
 daemon = Process(target=Crawler.run_task, args=(db,))

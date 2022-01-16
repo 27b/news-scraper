@@ -1,5 +1,4 @@
 from abc import ABC,  abstractmethod
-
 from crawler.core.scraper import IScraper
 
 
