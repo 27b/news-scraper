@@ -7,7 +7,7 @@ class IScraper(ABC):
     """Wrap the scraping module to keep a minimum coupling."""
 
     @abstractmethod
-    def execute(self, url: str, values: dict) -> list[dict]:
+    def execute(self, url: str, values: dict, category: str) -> list[dict]:
         """Execute the scraper with config and returns the result."""
         pass
 
@@ -15,13 +15,13 @@ class IScraper(ABC):
 class AutoScraperScraper(IScraper):
     """Interface of AutoScraper module."""
 
-    async def execute(self, url: str, values: dict) -> list[dict]:
+    async def execute(self, url: str, values: dict, category: str) -> list[dict]:
         """Execute AutoScraper with the config and returns the result."""
         scraper = AutoScraper()
-        scraper.build(url, wanted_dict=values)
+        await scraper.build(url, wanted_dict=values)
 
         # group and organize results
-        v = scraper.get_result_similar(
+        v = await scraper.get_result_similar(
             url, keep_order=True, grouped=True, group_by_alias=True
         )
 
@@ -29,7 +29,12 @@ class AutoScraperScraper(IScraper):
         r_zip = list(zip(v['title'], v['description'], v['author']))
 
         result = [
-            {'title': i[0], 'description': i[1], 'author': i[2]}
+            {
+                'title': i[0],
+                'description': i[1],
+                'author': i[2],
+                'category': category
+            }
             for i in r_zip
         ]
 

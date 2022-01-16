@@ -26,9 +26,8 @@ class Post(db.Model):
     title = db.Column(db.String(128), nullable=False, index=True)
     description = db.Column(db.String(256), nullable=True, index=True)
     author = db.Column(db.String(64), nullable=True, index=True)
-    content = db.Column(db.Text, nullable=True, index=True)
-    datetime = db.Column(db.String(32))
-    added_in = db.Column(db.DateTime, default=dt.utcnow, index=True)
+    url = db.Column(db.String(513), nullable=True, index=True)
+    datetime = db.Column(db.DateTime, default=dt.utcnow, index=True)
 
     newsletter_id = db.Column(db.Integer, db.ForeignKey('newsletters.id', ondelete='CASCADE'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))

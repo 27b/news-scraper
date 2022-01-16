@@ -2,7 +2,7 @@ from crawler.spiders.core.spider import BasicSpider
 from crawler.spiders.core.scraper import AutoScraperScraper
 from config import list_of_sites
 from time import sleep
-from models import Post
+from models import Post, Category
 
 
 TIME_FOR_SLEEP = 60 * 1
@@ -14,19 +14,23 @@ class Crawler:
     __database_instance = None
 
     @classmethod
-    def __insert_in_database(cls, list_of_posts: list[dict]) -> None:
+    def __insert_in_database(cls, name: str, list_of_posts: list[dict]) -> None:
         """Insert the new values in the database."""
         if cls.__database_instance:
             db = cls.__database_instance
             for post in list_of_posts:
-                post_in_db = db.query.filter_by(title=post.title)
-                if not post_in_db:
+                newsletter_in_db = Newslette.query.filter_by(name=name).first()
+                category_in_db = Category.query.filter_by(title=post.category).first()
+                post_in_db = Post.query.filter_by(title=post.title)
+                if newsletter_in_db and category_in_db and not post_in_db:
                     try:
                         new_post = Post()
-                        new_post.title = post.title
-                        new_post.description = post.description
-                        new_post.content = post.content
-                        new_post.url = post.url
+                        new_post.title = post['title']
+                        new_post.description = post['description']
+                        new_post.author = post['author']
+                        new_post.url = post['url']
+                        new_post.newsletter_id = newsletter_in_db.id
+                        new_post.category_id = category_in_db.id
                         db.session.add(new_post)
                         db.session.commit()
                     except Exception as e:
@@ -49,4 +53,4 @@ class Crawler:
                 # Execute subprocess
                 spider = BasicSpider(AutoScraperScraper())
                 spider.execute_scraper(newsletter)
-                cls.__insert_in_database(spider.result())
+                cls.__insert_in_database(newsletter.name, spider.result())

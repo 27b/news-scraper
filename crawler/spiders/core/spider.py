@@ -8,7 +8,7 @@ class ISpider(ABC):
 
     @abstractmethod
     async def execute_scraper(self, newsletter: dict) -> None:
-        """Run the low lev el abstraction of the scraper library."""
+        """Run the low level abstraction of the scraper library."""
         pass
 
     @abstractmethod
@@ -25,17 +25,14 @@ class BasicSpider(ISpider):
         self.result = None
 
     async def execute_scraper(self, newsletter: dict) -> None:
-        """
-        :param newsletter:
-        :return:
-        """
+        """Run the low level abstraction of the scraper library."""
         result = []
+
         for category in newsletter['categories']:
             for url in category:
                 wanted_list = newsletter['wanted_list']
-                scraped_page = await self.scraper.execute(url, wanted_list)
-                scraped_page['category'] = category
-                result.append(scraped_page)
+                page = self.scraper.execute(url, wanted_list, category)
+                result.append(page)
         self.result = result
 
     def result(self) -> list[dict]:
