@@ -2,7 +2,7 @@ from crawler.spiders.core.spider import BasicSpider
 from crawler.spiders.core.scraper import AutoScraperScraper
 from config import list_of_sites
 from time import sleep
-from models import Post, Category
+from models import Newsletter, Category, Post
 
 
 TIME_FOR_SLEEP = 60 * 1
@@ -19,9 +19,9 @@ class Crawler:
         if cls.__database_instance:
             db = cls.__database_instance
             for post in list_of_posts:
-                newsletter_in_db = Newslette.query.filter_by(name=name).first()
-                category_in_db = Category.query.filter_by(title=post.category).first()
-                post_in_db = Post.query.filter_by(title=post.title)
+                newsletter_in_db = Newsletter.query.filter_by(name=name).first()
+                category_in_db = Category.query.filter_by(name=post['category']).first()
+                post_in_db = Post.query.filter_by(title=post['title'])
                 if newsletter_in_db and category_in_db and not post_in_db:
                     try:
                         new_post = Post()
