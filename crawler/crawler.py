@@ -15,7 +15,15 @@ class Crawler:
 
     @classmethod
     def __insert_in_database(cls, name: str, list_of_posts: list[dict]) -> None:
-        """Insert the new values in the database."""
+        """Insert the new values in the database.
+
+        Args:
+         name: The Newsletter name, is used to search using Newsletter model.
+         list_of_posts: List of rules, stay in the file: config.py.
+
+        Returns:
+             Run permanently.
+        """
         if cls.__database_instance:
             db = cls.__database_instance
             for post in list_of_posts:

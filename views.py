@@ -9,10 +9,12 @@ class IndexView(MethodView):
     JavaScript and SocketIO.
     """
 
-    def get(self):
-        """
-        Return a page, and coming soon use Jinja for render the view with the
-        last posts.
+    @staticmethod
+    def get():
+        """Send the static page with the database posts rendered by Jinja.
+
+        Returns:
+            Jinja template
         """
         return render_template('index.html')
 
@@ -20,15 +22,22 @@ class IndexView(MethodView):
 class PostView(MethodView):
     """Returns post data by id."""
 
-    def get(self, post_id: int = None) -> dict:
+    @staticmethod
+    def get(post_id: int = None) -> dict:
+        """If not post_id return a list of posts.
+
+        Args:
+            post_id: An integer to search in the database.
+
+        Returns:
+            One or more dictionaries with the public values of the Post model.
+        """
         post_schema = PostSchema()
         posts_schema = PostSchema(many=True)
 
         if post_id:
-            post = Post.query.filter_by(id=post_id).first()
-            if post:
-                return post_schema.dump(post)
-            return {'message': 'Post does not exists.'}
+            post = Post.query.get_or_404(post_id)
+            return post_schema.dump(post)
 
         posts = Post.query.all()
         return {'posts': posts_schema.dumps(posts)}

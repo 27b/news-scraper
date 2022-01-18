@@ -15,7 +15,22 @@ class AutoScraperScraper(IScraper):
     """Interface of AutoScraper module."""
 
     def execute(self, url: str, values: dict, category: str) -> list[dict]:
-        """Execute AutoScraper with the config and returns the result."""
+        """Execute the AutoScraper with config and returns the result.
+
+        Note:
+            AutoScraper don't have documentation, that is why it is
+            difficult to use the library, for now the performance is not very
+            good due to how the data must be organized.
+
+        Args:
+            url: The url that the scraper will receive.
+            values:
+            category: An string to be inserted in each dict of the list.
+
+        Returns:
+            A list of dictionaries with title, description, author and
+            category.
+        """
         scraper = AutoScraper()
         scraper.build(url, wanted_dict=values)
 

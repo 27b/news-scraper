@@ -17,14 +17,21 @@ class ISpider(ABC):
 
 
 class BasicSpider(ISpider):
-    """Return a list of four values per dict."""
+    """Return a list of five keywords per dict."""
 
     def __init__(self, scraper: IScraper):
         self.scraper = scraper
         self.results_of_categories = None
 
     def execute_scraper(self, newsletter: dict) -> None:
-        """Run the low level abstraction of the scraper library."""
+        """Run the low level abstraction of the scraper library.
+
+        Args:
+            newsletter: receive a dictionary of the config file.
+
+        Returns:
+            None, to get the result execute the .result method.
+        """
         result = None
 
         for category in newsletter['categories']:
@@ -37,4 +44,9 @@ class BasicSpider(ISpider):
         self.results_of_categories = result
 
     def result(self) -> list[dict]:
+        """Return the results of the scraper.
+
+        Returns
+            A list of dictionaries.
+        """
         return self.results_of_categories
