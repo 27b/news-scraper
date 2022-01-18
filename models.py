@@ -9,7 +9,7 @@ db = SQLAlchemy()
 class Newsletter(db.Model):
     __tablename__ = 'newsletters'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), nullable=False)
+    name = db.Column(db.String(32), nullable=False, index=True, unique=True)
 
     def __str__(self):
         return self.name
@@ -18,7 +18,7 @@ class Newsletter(db.Model):
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), nullable=False, index=True)
+    name = db.Column(db.String(32), nullable=False, index=True, unique=True)
 
     def __str__(self):
         return self.name

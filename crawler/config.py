@@ -4,6 +4,12 @@ list_of_sites = [
         'categories': {
             'economy': [
                 'https://www.nytimes.com/section/business/economy'
+            ],
+            'politics': [
+                'https://www.nytimes.com/section/politics'
+            ],
+            'technology': [
+                'https://www.nytimes.com/section/technology'
             ]
         },
         'wanted_list': {

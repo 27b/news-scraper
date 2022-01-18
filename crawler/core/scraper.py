@@ -44,12 +44,12 @@ class AutoScraperScraper(IScraper):
 
         result = [
             {
-                'title': i[0],
-                'description': i[1],
-                'author': i[2],
+                'title': value[0],
+                'description': value[1],
+                'author': value[2],
                 'category': category
             }
-            for i in r_zip
+            for value in r_zip
         ]
 
         return result
