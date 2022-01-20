@@ -6,7 +6,7 @@ class ISpider(ABC):
     """High Abstraction of the library of scraping."""
 
     @abstractmethod
-    async def execute_scraper(self, newsletter: dict) -> None:
+    def execute_scraper(self, newsletter: dict) -> None:
         """Run the low level abstraction of the scraper library."""
         pass
 
