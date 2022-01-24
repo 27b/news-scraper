@@ -17,17 +17,19 @@ class ISpider(ABC):
 
 
 class BasicSpider(ISpider):
-    """Return a list of five keywords per dict."""
+    """
+    Access each category of the newsletter and in each category
+    access each item. Within each item you access the link using
+    the provided scraper and the result is stored, you can access
+    it using result method.
+    """
 
     def __init__(self, scraper: IScraper):
         self.scraper = scraper
         self.results_of_categories = None
 
     def execute_scraper(self, newsletter: dict) -> None:
-        """ Access each category of the newsletter and in each category
-            access each item. Within each item you access the link using
-            the provided scraper and the result is stored, you can access
-            it using result method.
+        """Run the low level abstraction of the scraper library.
 
         Args:
             newsletter: receive a dictionary of the config file.
