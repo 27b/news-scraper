@@ -3,20 +3,32 @@ list_of_sites = [
         'name': 'NYTimes',
         'categories': {
             'economy': [
-                'https://www.nytimes.com/section/business/economy'
+                {   
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/business/economy'
+                }
             ],
             'politics': [
-                'https://www.nytimes.com/section/politics'
+                {
+                    'case': 'case-2',
+                    'url': 'https://www.nytimes.com/section/politics'
+                }
             ],
             'technology': [
-                'https://www.nytimes.com/section/technology'
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/technology'
+                }
             ]
         },
         'wanted_list': {
-            'title': ["Inflation is too high, President Biden’s pick for Fed vice chair says as her nomination hearing begins."],
-            'description': ["Lael Brainard, the Federal Reserve governor who President Biden nominated for vice chair, said the central bank is focused on getting price gains back down."],
-            'author': ["Jeanna Smialek"],
-            'url': ['https://www.nytimes.com/2022/01/14/business/retail-sales-december.html']
+            'case-1': {
+                'container': 'div.css-13mho3u ol',
+                'title': 'li div div a h2::text',
+                'description': 'li div div a p.css-1echdzn::text',
+                'author': 'li div div a div.css-1nqbnmb.e140qd2t0 p',
+                'url': ''
+            }
         }
     }
 ]

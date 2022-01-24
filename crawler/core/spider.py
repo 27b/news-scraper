@@ -24,23 +24,27 @@ class BasicSpider(ISpider):
         self.results_of_categories = None
 
     def execute_scraper(self, newsletter: dict) -> None:
-        """Run the low level abstraction of the scraper library.
+        """ Access each category of the newsletter and in each category
+            access each item. Within each item you access the link using
+            the provided scraper and the result is stored, you can access
+            it using result method.
 
         Args:
             newsletter: receive a dictionary of the config file.
 
         Returns:
-            None, to get the result execute the .result method.
+            None, to get the result execute the result method.
         """
         result = None
-
         for category in newsletter['categories']:
-            print(f'Category: {category}')
-            for url in newsletter['categories'][category]:
-                print(f' * URL: {url}')
-                wanted_list = newsletter['wanted_list']
-                page = self.scraper.execute(url, wanted_list, category)
-                result = page
+            for item in newsletter['categories'][category]:
+                case = item.get('case')
+                wanted_list = category['wanted_list'][case]
+                if wanted_list: 
+                    page = self.scraper.execute(item.get('url'), wanted_list, category)
+                    result = page
+                else:
+                    print(f"ERROR: {case} not in the wanted list of { newsletter.get('name') }.")
         self.results_of_categories = result
 
     def result(self) -> list[dict]:
