@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
-from autoscraper import AutoScraper
+from scrapy import Spider
+from scrapy.crawler import CrawlerProcess
+from datetime import datetime as dt
+from re import compile
 
 
 class IScraper(ABC):
@@ -14,42 +17,44 @@ class IScraper(ABC):
 class AutoScraperScraper(IScraper):
     """Interface of AutoScraper module."""
 
-    def execute(self, url: str, values: dict, category: str) -> list[dict]:
-        """Execute the AutoScraper with config and returns the result.
-
-        Note:
-            AutoScraper don't have documentation, that is why it is
-            difficult to use the library, for now the performance is not very
-            good due to how the data must be organized.
+    @classmethod
+    def execute(cls, url: str, values: dict, category: str) -> list[dict]:
+        """Execute the Scrapy scraper with config and returns the result.
 
         Args:
             url: The url that the scraper will receive.
-            values:
+            values: Addresses of html elements.
             category: An string to be inserted in each dict of the list.
 
         Returns:
-            A list of dictionaries with title, description, author and
-            category.
+            A list of dictionaries with title, description, author,
+            datetime and category.
         """
-        scraper = AutoScraper()
-        scraper.build(url, wanted_dict=values)
+        scraper = SimpleScrapyScraper
+        scraper.name = 'AutoScraper'
+        scraper.start_urls = [url]
+        scraper.values = values
+        scraper.category = category
+        process = CrawlerProcess()
+        process.crawl(scraper)
+        return process.start()
 
-        # group and organize results
-        v = scraper.get_result_similar(
-            url, keep_order=True, grouped=True, group_by_alias=True
-        )
 
-        # Separate results
-        r_zip = list(zip(v['title'], v['description'], v['author']))
-
-        result = [
+class SimpleScrapyScraper(Spider):
+    """Simple wraper of Scrapy."""
+    
+    @staticmethod
+    def parse(response) -> list[dict]:
+        post = response.css('div.css-13mho3u ol')
+        title = post.css('li div div a h2::text').getall()
+        description = post.css('li div div a p.css-1echdzn::text').getall()
+        author = post.css('li div div a div.css-1nqbnmb.e140qd2t0 p').getall()
+        return [
             {
-                'title': value[0],
-                'description': value[1],
-                'author': value[2],
-                'category': category
+                'title': post[0],
+                'description': post[1],
+                'author': compile(r'<[^>]+>').sub('', post[2]).split('By ')[1],
+                'datetime': dt.utcnow().strftime('%Y-%m-%d %H:%M:%S')
             }
-            for value in r_zip
+            for post in list(zip(title, description, author))
         ]
-
-        return result
