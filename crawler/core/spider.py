@@ -17,11 +17,9 @@ class ISpider(ABC):
 
 
 class BasicSpider(ISpider):
-    """
-    Access each category of the newsletter and in each category
-    access each item. Within each item you access the link using
-    the provided scraper and the result is stored, you can access
-    it using result method.
+    """Access each category of the newsletter and in each category access each
+    item, within each item you access the link using the provided scraper and
+    the result is stored, you can access it using result method.
     """
 
     def __init__(self, scraper: IScraper):

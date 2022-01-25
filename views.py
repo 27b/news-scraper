@@ -4,8 +4,7 @@ from models import Post, PostSchema
 
 
 class IndexView(MethodView):
-    """
-    On init, is rendered with Jinja, on update get data from Api using
+    """On init, is rendered with Jinja, on update get data from Api using
     JavaScript and SocketIO.
     """
 
