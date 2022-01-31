@@ -1,5 +1,6 @@
 from abc import ABC,  abstractmethod
 from crawler.core.scraper import IScraper
+from multiprocessing import Process, Queue
 
 
 class ISpider(ABC):
@@ -35,17 +36,27 @@ class BasicSpider(ISpider):
         Returns:
             None, to get the result execute the result method.
         """
-        result = None
+        result = []
+        result_of_process = Queue()
         for category in newsletter['categories']:
             for item in newsletter['categories'][category]:
-                case = item.get('case')
-                wanted_list = category['wanted_list'][case]
-                if wanted_list: 
-                    page = self.scraper.execute(item.get('url'), wanted_list, category)
-                    result = page
+                case = item['case']
+                wanted_list = newsletter['wanted_list'][case]
+                if wanted_list:
+                    result_of_page = Process(
+                        target=self.scraper.execute,
+                        args=(result_of_process, item.get('url'), wanted_list, category)
+                    )
+                    print(f"Starting {newsletter['name']} - {category}")
+                    result_of_page.start()
+                    result_of_page.join()
                 else:
-                    print(f"ERROR: {case} not in the wanted list of { newsletter.get('name') }.")
-        self.results_of_categories = result
+                    print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
+        while result_of_process.empty() is False:
+            process_result = result_of_process.get()
+            print('RESULT SECURE', process_result)
+            result.extend(process_result)
+        self.results_of_categories = result if result != [] else None
 
     def result(self) -> list[dict]:
         """Return the results of the scraper.

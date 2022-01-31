@@ -5,7 +5,7 @@ from models import Newsletter, Category, Post
 from time import sleep
 
 
-TIME_FOR_SLEEP = 60 * 1
+TIME_FOR_SLEEP = 20 * 1
 SCRAPER_LIST = list_of_sites
 
 
@@ -49,7 +49,7 @@ class Crawler:
                     else:
                         pass  # Post already in database
                 else:
-                    print(f'Newsletter with de name {name} not in database.')
+                    print(f'ERROR: Newsletter with de name {name} not in database.')
         else:
             print('ERROR: Database not instanced.')
 
@@ -68,4 +68,7 @@ class Crawler:
                 spider = BasicSpider(AutoScraperScraper())
                 spider.execute_scraper(newsletter)
                 result = spider.result()
-                cls.__insert_in_database(newsletter['name'], result)
+                if result is not None:
+                    cls.__insert_in_database(newsletter['name'], result)
+                else:
+                    print(f"ERROR: The result of {newsletter['name']} is: {result}")

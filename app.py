@@ -27,8 +27,8 @@ ma = Marshmallow(app)
 #
 
 app.add_url_rule('/', view_func=IndexView.as_view('index'))
-app.add_url_rule('/post/', view_func=PostView.as_view('posts'))
-app.add_url_rule('/post/<int:post_id>', view_func=PostView.as_view('post'))
+app.add_url_rule('/api/post/', view_func=PostView.as_view('posts'))
+app.add_url_rule('/api/post/<int:post_id>', view_func=PostView.as_view('post'))
 
 daemon = Process(target=Crawler.run_task, args=(db,))
 
@@ -51,5 +51,6 @@ if __name__ == '__main__':
 
         db.session.commit()
         daemon.start()
+        daemon.join()
 
     app.run()
