@@ -52,10 +52,10 @@ class SimpleScrapyScraper(Spider):
 
     @classmethod
     def parse(cls, response) -> None:
-        post = response.css('div.css-13mho3u ol')
-        title = post.css('li div div a h2::text').getall()
-        description = post.css('li div div a p.css-1echdzn::text').getall()
-        author = post.css('li div div a div.css-1nqbnmb.e140qd2t0 p').getall()
+        post = response.css(cls.values['container'])
+        title = post.css(cls.values['title']).getall()
+        description = post.css(cls.values['description']).getall()
+        author = post.css(cls.values['author']).getall()
         cls.result = [
             {
                 'title': post[0],
