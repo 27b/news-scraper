@@ -39,7 +39,7 @@ if __name__ == '__main__':
         db.create_all()
 
         newsletters = ['NYTimes']
-        categories = ['economy', 'politics', 'technology']
+        categories = ['economy', 'media', 'politics', 'technology']
         
         for name in newsletters:
             newsletter = Newsletter(name=name)

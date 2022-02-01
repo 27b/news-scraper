@@ -36,27 +36,29 @@ class Crawler:
             db = cls.__database
             for post in list_of_posts:
                 category = post.get('category')
-                newsletter_in_db = list(filter(lambda x: x.name == name, cls.__newsletters))[0]
-                category_in_db = list(filter(lambda x: x.name == category, cls.__categories))[0]
+                newsletter_in_db = list(filter(lambda x: x.name == name, cls.__newsletters))
+                category_in_db = list(filter(lambda x: x.name == category, cls.__categories))
                 post_in_db = Post.query.filter_by(title=post.get('title')).first()
-                if newsletter_in_db and category_in_db:
-                    if not post_in_db:
-                        try:
+                try:
+                    if category_in_db == []:
+                        print('ERROR: Category does not exist.')
+                    elif newsletter_in_db[0] and category_in_db[0]:
+                        if not post_in_db:
                             new_post = Post()
                             new_post.title = post.get('title')
                             new_post.description = post.get('description')
                             new_post.author = post.get('author')
                             new_post.url = post.get('url')
-                            new_post.newsletter_id = newsletter_in_db.id
-                            new_post.category_id = category_in_db.id
+                            new_post.newsletter_id = newsletter_in_db[0].id
+                            new_post.category_id = category_in_db[0].id
                             db.session.add(new_post)
                             db.session.commit()
-                        except Exception as e:
-                            print(f'ERROR: {e}')
+                        else:
+                            pass  # Post already in database
                     else:
-                        pass  # Post already in database
-                else:
-                    print(f'ERROR: Newsletter with de name {name} not in database.')
+                        print(f'ERROR: Newsletter {name} not in database.')
+                except Exception as e:
+                    print(f'ERROR: {e}')
         else:
             print('ERROR: Database not instanced.')
 
