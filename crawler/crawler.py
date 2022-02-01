@@ -11,26 +11,33 @@ SCRAPER_LIST = list_of_sites
 
 class Crawler:
     """Execute multiple spiders and insert the results in the database."""
-    __database_instance = None
+    __database = None
+    __categories = None
+    __newsletters = None
 
     @classmethod
     def __insert_in_database(cls, name: str, list_of_posts: list[dict]) -> None:
         """Insert the new values in the database.
 
         Args:
-            name: The Newsletter name, is used to search using Newsletter model.
+            name: The Newsletter name, is used to search using Newsletter.
             list_of_posts: List of rules, stay in the file: config.py.
 
         Returns:
             Run permanently.
         """
-        if cls.__database_instance:
-            db = cls.__database_instance
+        if not cls.__newsletters:
+            cls.__newsletters = [M for M in Newsletter.query.all()]
+            print('Newsletter list created:', cls.__newsletters)
+        if not cls.__categories:
+            cls.__categories = [M for M in Category.query.all()]
+            print('Categories list created:', cls.__categories)
+        if cls.__database:
+            db = cls.__database
             for post in list_of_posts:
-                # Optimize this by storing the category/newsletter values in the class
-                # and accessing them instead of making constant requests to the database.
-                newsletter_in_db = Newsletter.query.filter_by(name=name).first()
-                category_in_db = Category.query.filter_by(name=post.get('category')).first()
+                category = post.get('category')
+                newsletter_in_db = list(filter(lambda x: x.name == name, cls.__newsletters))[0]
+                category_in_db = list(filter(lambda x: x.name == category, cls.__categories))[0]
                 post_in_db = Post.query.filter_by(title=post.get('title')).first()
                 if newsletter_in_db and category_in_db:
                     if not post_in_db:
@@ -58,7 +65,7 @@ class Crawler:
         """Run this method in a background task, this method execute the
         scrapers and send data in cls, this data is inserted in the database.
         """
-        cls.__database_instance = database
+        cls.__database = database
 
         while True:
             sleep(TIME_FOR_SLEEP)

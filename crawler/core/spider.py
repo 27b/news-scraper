@@ -51,7 +51,8 @@ class BasicSpider(ISpider):
                     result_of_page.start()
                     result_of_page.join()
                 else:
-                    print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
+                    pass
+                    # print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
         while result_of_process.empty() is False:
             process_result = result_of_process.get()
             result.extend(process_result)

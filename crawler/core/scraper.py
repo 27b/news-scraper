@@ -42,7 +42,6 @@ class AutoScraperScraper(IScraper):
         process.crawl(scraper)
         process.start()  # Don't use exceptions, let it crash
         r = scraper.result
-        print(r)
         queue.put(r)
 
 

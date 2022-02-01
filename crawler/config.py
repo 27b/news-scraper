@@ -7,6 +7,18 @@ list_of_sites = [
                     'case': 'case-1',
                     'url': 'https://www.nytimes.com/section/business/economy'
                 }
+            ],
+            'politics': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/politics'
+                }
+            ],
+            'media': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/business/media'
+                }
             ]
         },
         'wanted_list': {
