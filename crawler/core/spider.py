@@ -54,8 +54,8 @@ class BasicSpider(ISpider):
                     print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
         while result_of_process.empty() is False:
             process_result = result_of_process.get()
-            print('RESULT SECURE', process_result)
             result.extend(process_result)
+            print('RESULT SAVED.')
         self.results_of_categories = result if result != [] else None
 
     def result(self) -> list[dict]:

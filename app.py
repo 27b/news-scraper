@@ -51,6 +51,5 @@ if __name__ == '__main__':
 
         db.session.commit()
         daemon.start()
-        daemon.join()
 
     app.run()

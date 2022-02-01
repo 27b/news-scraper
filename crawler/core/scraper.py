@@ -1,12 +1,9 @@
 from abc import ABC, abstractmethod
 from scrapy import Spider, signals
 from scrapy.crawler import CrawlerProcess
-from twisted.internet import reactor
 from datetime import datetime as dt
 from re import compile
 import logging
-from sys import exit
-
 
 logging.getLogger('scrapy').setLevel(logging.WARNING)
 
@@ -28,6 +25,7 @@ class AutoScraperScraper(IScraper):
         """Execute the Scrapy scraper with config and returns the result.
 
         Args:
+            queue: A queue of multiprocessing.
             url: The url that the scraper will receive.
             values: Addresses of html elements.
             category: An string to be inserted in each dict of the list.
@@ -42,18 +40,18 @@ class AutoScraperScraper(IScraper):
         scraper.category = category
         process = CrawlerProcess()
         process.crawl(scraper)
-        process.start(stop_after_crawl=False)  # Don't use exceptions, let it crash
-        queue.put(scraper.result)
-        print(scraper.result)
-        exit()
-        
+        process.start()  # Don't use exceptions, let it crash
+        r = scraper.result
+        print(r)
+        queue.put(r)
+
 
 class SimpleScrapyScraper(Spider):
-    """Simple wraper of Scrapy."""
+    """Simple wrapper of Scrapy."""
     name = 'SimpleScraperUsingScrapy'
 
     @classmethod
-    def parse(cls, response) -> list[dict]:
+    def parse(cls, response) -> None:
         post = response.css('div.css-13mho3u ol')
         title = post.css('li div div a h2::text').getall()
         description = post.css('li div div a p.css-1echdzn::text').getall()

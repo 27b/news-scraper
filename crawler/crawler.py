@@ -5,7 +5,7 @@ from models import Newsletter, Category, Post
 from time import sleep
 
 
-TIME_FOR_SLEEP = 20 * 1
+TIME_FOR_SLEEP = 60 * 1
 SCRAPER_LIST = list_of_sites
 
 
@@ -56,7 +56,7 @@ class Crawler:
     @classmethod
     def run_task(cls, database) -> None:
         """Run this method in a background task, this method execute the
-        scrapersand send data in cls, this data is inserted in the database.
+        scrapers and send data in cls, this data is inserted in the database.
         """
         cls.__database_instance = database
 
