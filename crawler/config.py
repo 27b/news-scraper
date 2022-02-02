@@ -14,10 +14,32 @@ list_of_sites = [
                     'url': 'https://www.nytimes.com/section/politics'
                 }
             ],
-            'media': [
+            'business': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/business'
+                },
                 {
                     'case': 'case-1',
                     'url': 'https://www.nytimes.com/section/business/media'
+                }
+            ],
+            'technology': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/technology'
+                }
+            ],
+            'science': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/science'
+                }
+            ],
+            'world': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/world'
                 }
             ]
         },

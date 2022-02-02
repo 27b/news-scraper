@@ -4,6 +4,7 @@ from flask_marshmallow import Marshmallow
 from multiprocessing import Process
 from crawler.crawler import Crawler
 from models import db, Newsletter, Category
+from sqlalchemy import create_engine, inspect
 from views import IndexView, PostView
 from dotenv import load_dotenv
 from os import getenv
@@ -15,8 +16,8 @@ from os import getenv
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = eval(getenv('TRACK_MODIFICATIONS'))
+app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DB_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = eval(getenv('DB_MODIFICATIONS'))
 app.config['DEBUG'] = eval(getenv('DEBUG_MODE'))
 db.init_app(app)
 migrate = Migrate(app=app, db=db)
@@ -34,23 +35,44 @@ daemon = Process(target=Crawler.run_task, args=(db,))
 
 
 if __name__ == '__main__':
+    engine = create_engine(getenv('DB_URI'))
+    
+    newsletters = ['NYTimes']
+    categories = ['economy', 'media', 'politics', 'technology', 'science', \
+                  'world', 'books', 'style']
+
     with app.app_context():
-        db.drop_all()
-        db.create_all()
-
-        newsletters = ['NYTimes']
-        categories = ['economy', 'media', 'politics', 'technology']
+        # if there are no tables in the database do:
+        if not inspect(engine).has_table('newsletters'):
+            db.create_all()
         
-        for name in newsletters:
-            newsletter = Newsletter(name=name)
+            for name in newsletters:
+                newsletter = Newsletter(name=name)
+                db.session.add(newsletter)
+
+            for name in categories:
+                category = Category(name=name)
+                db.session.add(category)
+        
+            db.session.commit()
+    
+        # If there are new categories/newsletters do:
+        newsletters_db = [N.name for N in Newsletter.query.all()]
+        categories_db = [C.name for C in Category.query.all()]
+    
+        for n in list(filter(lambda n: n not in newsletters_db, newsletters)):
+            print('Adding newsletter:', n)
+            newsletter = Newsletter(name=n)
             db.session.add(newsletter)
-        
-        for name in categories:
-            category = Category(name=name)
-            db.session.add(category)
+            db.session.commit()
 
-        db.session.commit()
-        daemon.start()
-        # daemon.join()
+        for c in list(filter(lambda c: c not in categories_db, categories)):
+            print('Adding category:', c)
+            category = Category(name=c)
+            db.session.add(category)
+            db.session.commit()
+    
+    daemon.start()
+    # daemon.join()  # Remove the hash for view the logs (the app will not run)
 
     app.run()

@@ -27,10 +27,10 @@ class Category(db.Model):
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128), nullable=False, index=True)
-    description = db.Column(db.String(256), nullable=True, index=True)
-    author = db.Column(db.String(64), nullable=True, index=True)
-    url = db.Column(db.String(513), nullable=True, index=True)
+    title = db.Column(db.String(256), nullable=False, index=True)
+    description = db.Column(db.String(512), nullable=True, index=True)
+    author = db.Column(db.String(128), nullable=True, index=True)
+    url = db.Column(db.String(512), nullable=True, index=True)
     datetime = db.Column(db.DateTime, default=dt.utcnow, index=True)
 
     newsletter_id = db.Column(db.Integer, db.ForeignKey('newsletters.id', ondelete='CASCADE'))
