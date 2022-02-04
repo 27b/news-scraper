@@ -47,16 +47,16 @@ class BasicSpider(ISpider):
                         target=self.scraper.execute,
                         args=(result_of_process, item.get('url'), wanted_list, category)
                     )
-                    print(f"Starting {newsletter['name']} - {category}")
                     result_of_page.start()
                     result_of_page.join()
                 else:
-                    pass
-                    # print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
+                    print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
+        
         while result_of_process.empty() is False:
             process_result = result_of_process.get()
             result.extend(process_result)
-            print('RESULT SAVED.')
+            print('RESULT SAVED:', process_result)
+        
         self.results_of_categories = result if result != [] else None
 
     def result(self) -> list[dict]:

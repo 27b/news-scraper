@@ -2,12 +2,6 @@ list_of_sites = [
     {
         'name': 'NYTimes',
         'categories': {
-            'economy': [
-                {   
-                    'case': 'case-1',
-                    'url': 'https://www.nytimes.com/section/business/economy'
-                }
-            ],
             'politics': [
                 {
                     'case': 'case-1',
@@ -22,12 +16,36 @@ list_of_sites = [
                 {
                     'case': 'case-1',
                     'url': 'https://www.nytimes.com/section/business/media'
-                }
+                },
+                {   
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/business/economy'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/business/energy-environment'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/business/small-business'
+                },
             ],
             'technology': [
                 {
                     'case': 'case-1',
                     'url': 'https://www.nytimes.com/section/technology'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/technology/personaltech'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/spotlight/cybersecurity'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/topic/subject/social-media'
                 }
             ],
             'science': [
@@ -41,7 +59,47 @@ list_of_sites = [
                     'case': 'case-1',
                     'url': 'https://www.nytimes.com/section/world'
                 }
-            ]
+            ],
+            'books': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/books'
+                }
+            ],
+            'automobile': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/automobiles'
+                }
+            ],
+            'health': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/health'
+                }
+            ],
+            'education': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/education'
+                }
+            ],
+            'television': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.nytimes.com/section/movies'
+                },
+                #{
+                #    'case': 'case-1',
+                #    'url': 'https://www.nytimes.com/spotlight/what-to-watch'
+                #}
+            ],
+            #'climate': [
+            #    {
+            #        'case': 'case-1',
+            #        'url': 'https://www.nytimes.com/section/climate'
+            #    }
+            #]
         },
         'wanted_list': {
             'case-1': {

@@ -31,15 +31,16 @@ app.add_url_rule('/', view_func=IndexView.as_view('index'))
 app.add_url_rule('/api/post/', view_func=PostView.as_view('posts'))
 app.add_url_rule('/api/post/<int:post_id>', view_func=PostView.as_view('post'))
 
-daemon = Process(target=Crawler.run_task, args=(db,))
+daemon = Process(target=Crawler.run_task, args=(app, db))
 
 
 if __name__ == '__main__':
     engine = create_engine(getenv('DB_URI'))
     
     newsletters = ['NYTimes']
-    categories = ['economy', 'media', 'politics', 'technology', 'science', \
-                  'world', 'books', 'style']
+    categories = ['business', 'politics', 'technology', 'science', 'world', \
+                  'books', 'style', 'education', 'health', 'sports', 'arts', \
+                  'television', 'climate', 'automobile']
 
     with app.app_context():
         # if there are no tables in the database do:
