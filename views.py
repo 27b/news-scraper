@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify
 from flask.views import MethodView
 from models import Post, PostSchema
 
@@ -39,4 +39,4 @@ class PostView(MethodView):
             return post_schema.dump(post)
 
         posts = Post.query.all()
-        return {'posts': posts_schema.dumps(posts)}
+        return jsonify(_total=len(posts_schema.dump(posts)), posts=posts_schema.dump(posts))

@@ -37,7 +37,7 @@ daemon = Process(target=Crawler.run_task, args=(app, db))
 if __name__ == '__main__':
     engine = create_engine(getenv('DB_URI'))
     
-    newsletters = ['NYTimes']
+    newsletters = ['NYTimes', 'Time']
     categories = ['business', 'politics', 'technology', 'science', 'world', \
                   'books', 'style', 'education', 'health', 'sports', 'arts', \
                   'television', 'climate', 'automobile']

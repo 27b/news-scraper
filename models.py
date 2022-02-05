@@ -41,7 +41,11 @@ class Post(db.Model):
 
 
 class PostSchema(Schema):
+    id = fields.Str()
     title = fields.Str()
     description = fields.Str()
     author = fields.Str()
-    datetime = fields.Date()
+    datetime = fields.Str()
+    
+    class Meta:
+        ordered = True

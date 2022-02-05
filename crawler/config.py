@@ -110,5 +110,67 @@ list_of_sites = [
                 'url': ''
             }
         }
+    },
+    {
+        'name': 'Time',
+        'categories': {
+            'politics': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/politics/'
+                }
+            ],
+            'business': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/business/'
+                }
+            ],
+            'technology': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/tech/'
+                }
+            ],
+            'science': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/science/'
+                }
+            ],
+            'health': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/health/'
+                }
+            ],
+            'climate': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/climate/'
+                }
+            ],
+            'sports': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://time.com/section/sports/'
+                }
+            ],
+            #'world': [
+            #    {
+            #        'case': 'case-1',
+            #        'url': 'https://time.com/section/world/'
+            #    }
+            #]
+        },
+        'wanted_list': {
+            'case-1': {
+                'container': 'div.component.taxonomy-related-touts.section-related__touts',
+                'title': 'div.taxonomy-tout div.text h2.headline::text',
+                'description': 'h3.summary::text',
+                'author': 'span.byline span:first-child::text',
+                'url': ''
+            }
+        }
     }
 ]

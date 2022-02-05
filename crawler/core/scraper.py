@@ -63,9 +63,9 @@ class SimpleScrapyScraper(Spider):
             author = post.css(cls.values['author']).getall()
             cls.result = [
                 {
-                    'title': post[0],
-                    'description': post[1],
-                    'author': compile(r'<[^>]+>').sub('', post[2]).split('By ')[1],
+                    'title': post[0].strip(),
+                    'description': post[1].strip(),
+                    'author': compile(r'<[^>]+>').sub('', post[2]).split('By')[1].strip(),
                     'datetime': dt.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
                     'category': cls.category
                 }

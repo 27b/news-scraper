@@ -99,6 +99,7 @@ class Crawler:
                 spider.execute_scraper(newsletter)
                 result = spider.result()
                 if result is not None:
+                    print(result)
                     cls.__insert_in_database(newsletter['name'], result)
                 else:
                     print(f"ERROR: The result of {newsletter['name']} is: {result}")
