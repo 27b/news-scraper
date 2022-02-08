@@ -84,16 +84,16 @@ list_of_sites = [
                     'url': 'https://www.nytimes.com/section/education'
                 }
             ],
-            'television': [
-                {
-                    'case': 'case-1',
-                    'url': 'https://www.nytimes.com/section/movies'
-                },
-                #{
-                #    'case': 'case-1',
-                #    'url': 'https://www.nytimes.com/spotlight/what-to-watch'
-                #}
-            ],
+            #'television': [
+            #    {
+            #        'case': 'case-1',
+            #        'url': 'https://www.nytimes.com/section/movies'
+            #    },
+            #    #{
+            #    #    'case': 'case-1',
+            #    #    'url': 'https://www.nytimes.com/spotlight/what-to-watch'
+            #    #}
+            #],
             #'climate': [
             #    {
             #        'case': 'case-1',
@@ -169,6 +169,54 @@ list_of_sites = [
                 'title': 'div.taxonomy-tout div.text h2.headline::text',
                 'description': 'h3.summary::text',
                 'author': 'span.byline span:first-child::text',
+                'url': ''
+            }
+        }
+    },
+    {
+        'name': 'WashingtonPost',
+        'categories': {
+            'politics': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.washingtonpost.com/politics/?itid=nb_politics'
+                }
+            ],
+            'business': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.washingtonpost.com/economy/?itid=nb_business_economy'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.washingtonpost.com/economic-policy/?itid=nb_business_economic-policy'
+                },
+                #{
+                #    'case': 'case-1',
+                #    'url': 'https://www.washingtonpost.com/realestate/?itid=nb_business_real-estate'
+                #}
+            ],
+            'technology': [
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.washingtonpost.com/business/technology/?itid=nb_technology'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.washingtonpost.com/technology/innovations/?itid=nb_technology_innovations'
+                },
+                {
+                    'case': 'case-1',
+                    'url': 'https://www.washingtonpost.com/tech-policy/?itid=nb_technology_tech-policy'
+                }
+            ],
+        },
+        'wanted_list': {
+            'case-1': {
+                'container': 'article div',
+                'title': 'ul li div.w-100.grid div.pr-xs a h3::text',
+                'description': 'ul li div.w-100.grid div.pr-xs p.pt-xs.pb-xs::text',
+                'author': 'ul li div.w-100.grid div.pr-xs span a::text',
                 'url': ''
             }
         }

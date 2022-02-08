@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from scrapy import Spider, signals
+from scrapy import Spider, signals, http
 from scrapy.crawler import CrawlerProcess
 from datetime import datetime as dt
 from re import compile
@@ -44,6 +44,7 @@ class AutoScraperScraper(IScraper):
             process.crawl(scraper)
             process.start()  # Don't use exceptions, let it crash
             r = scraper.result
+            print(r)
         except Exception as error:
             print('SCRAPER ERROR', error)
         else:
@@ -53,14 +54,18 @@ class AutoScraperScraper(IScraper):
 class SimpleScrapyScraper(Spider):
     """Simple wrapper of Scrapy."""
     name = 'SimpleScraperUsingScrapy'
+    user_agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'
 
     @classmethod
     def parse(cls, response) -> None:
         try:
             post = response.css(cls.values['container'])
             title = post.css(cls.values['title']).getall()
+            print(title)
             description = post.css(cls.values['description']).getall()
+            print(description)
             author = post.css(cls.values['author']).getall()
+            print(author)
             cls.result = [
                 {
                     'title': post[0].strip(),

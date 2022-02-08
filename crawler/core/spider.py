@@ -37,26 +37,22 @@ class BasicSpider(ISpider):
             None, to get the result execute the result method.
         """
         result = []
-        result_of_process = Queue()
+        queue = Queue()
         for category in newsletter['categories']:
             for item in newsletter['categories'][category]:
                 case = item['case']
+                url = item.get('url')
                 wanted_list = newsletter['wanted_list'][case]
                 if wanted_list:
                     result_of_page = Process(
-                        target=self.scraper.execute,
-                        args=(result_of_process, item.get('url'), wanted_list, category)
+                        target = self.scraper.execute,
+                        args = (queue, url, wanted_list, category)
                     )
                     result_of_page.start()
                     result_of_page.join()
-                else:
-                    print(f"ERROR: {case} not in the wanted list of {newsletter.get('name')}.")
-        
-        while result_of_process.empty() is False:
-            process_result = result_of_process.get()
-            result.extend(process_result)
-            print('RESULT SAVED:', process_result)
-        
+            while queue.empty() is False:
+                scraper_result = queue.get()
+                result.extend(scraper_result)
         self.results_of_categories = result if result != [] else None
 
     def result(self) -> list[dict]:
