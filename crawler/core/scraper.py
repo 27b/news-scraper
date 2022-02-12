@@ -43,11 +43,11 @@ class AutoScraperScraper(IScraper):
             process = CrawlerProcess()
             process.crawl(scraper)
             process.start()  # Don't use exceptions, let it crash
-            r = scraper.result
+            result = scraper.result
         except Exception as error:
             print('SCRAPER ERROR', error)
         else:
-            queue.put(r)
+            queue.put(result)
 
 
 class SimpleScrapyScraper(Spider):
@@ -67,21 +67,26 @@ class SimpleScrapyScraper(Spider):
                 author_list = content.css(cls.values['author']).getall()    
                 author_quantity = len(author_list) 
 
-
                 if author_quantity == 1:
-                    author = content.css(cls.values['author']).get()    
-                else:
+                    author = str(content.css(cls.values['author']).get())    
+                if author_quantity > 1:
                     author = ''
                     for index, person in enumerate(author_list, start=1):
-                        # person = compile('<[^>]+>').sub('', author_html).strip()
                         if index != author_quantity:
                             person += ' and'
                         author += f' {person}'
+                else:
+                    author = '' # NoneType (Not HTML)
 
+                author = compile(r'<[^>]+>').sub('', author)
+
+                if 'By' in author:
+                    author = author.split('By')[1].strip()
+                
                 post = {
                     'title': title.strip(),
                     'description': description.strip(),
-                    'author': compile(r'<[^>]+>').sub('', author).split('By')[1].strip(),
+                    'author': author,
                     'datetime': dt.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
                     'category': cls.category
                 }
