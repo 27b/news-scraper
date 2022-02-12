@@ -6,7 +6,7 @@ from re import compile
 import logging
 
 
-logging.getLogger('scrapy').setLevel(logging.WARNING)
+logging.getLogger('scrapy').propagate = False
 
 
 class IScraper(ABC):
@@ -44,7 +44,6 @@ class AutoScraperScraper(IScraper):
             process.crawl(scraper)
             process.start()  # Don't use exceptions, let it crash
             r = scraper.result
-            print(r)
         except Exception as error:
             print('SCRAPER ERROR', error)
         else:
@@ -55,26 +54,39 @@ class SimpleScrapyScraper(Spider):
     """Simple wrapper of Scrapy."""
     name = 'SimpleScraperUsingScrapy'
     user_agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'
+    result = []
 
     @classmethod
     def parse(cls, response) -> None:
         try:
-            post = response.css(cls.values['container'])
-            title = post.css(cls.values['title']).getall()
-            print(title)
-            description = post.css(cls.values['description']).getall()
-            print(description)
-            author = post.css(cls.values['author']).getall()
-            print(author)
-            cls.result = [
-                {
-                    'title': post[0].strip(),
-                    'description': post[1].strip(),
-                    'author': compile(r'<[^>]+>').sub('', post[2]).split('By')[1].strip(),
+            container = response.css(cls.values['container'])
+            for content in container:
+                title = content.css(cls.values['title']).get()
+                description = content.css(cls.values['description']).get()
+
+                author_list = content.css(cls.values['author']).getall()    
+                author_quantity = len(author_list) 
+
+
+                if author_quantity == 1:
+                    author = content.css(cls.values['author']).get()    
+                else:
+                    author = ''
+                    for index, person in enumerate(author_list, start=1):
+                        # person = compile('<[^>]+>').sub('', author_html).strip()
+                        if index != author_quantity:
+                            person += ' and'
+                        author += f' {person}'
+
+                post = {
+                    'title': title.strip(),
+                    'description': description.strip(),
+                    'author': compile(r'<[^>]+>').sub('', author).split('By')[1].strip(),
                     'datetime': dt.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
                     'category': cls.category
                 }
-                for post in list(zip(title, description, author))
-            ]
+                print(post)
+                cls.result.append(post)
+
         except Exception as error:
             print('SCRAPY ERROR', error)

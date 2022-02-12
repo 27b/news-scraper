@@ -6,7 +6,7 @@ from time import sleep
 from sys import exit
 
 
-TIME_FOR_SLEEP = 2 * 5
+TIME_FOR_SLEEP = 60 * 5
 SCRAPER_LIST = list_of_sites
 
 
@@ -91,14 +91,14 @@ class Crawler:
         cls.__app = app
 
         while True:
-            sleep(TIME_FOR_SLEEP)
             for newsletter in SCRAPER_LIST:
                 # Execute subprocess
-                print('######################################################')
+                print('------------------------------------------------------')
                 print(f"NEWSLETTER: {newsletter['name']}")
-                print('######################################################')
+                print('------------------------------------------------------')
                 spider = BasicSpider(AutoScraperScraper())
                 spider.execute_scraper(newsletter)
                 result = spider.result()
                 if result is not None:
                     cls.__insert_in_database(newsletter['name'], result)
+            sleep(TIME_FOR_SLEEP)

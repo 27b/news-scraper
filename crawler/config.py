@@ -103,7 +103,7 @@ list_of_sites = [
         },
         'wanted_list': {
             'case-1': {
-                'container': 'div.css-13mho3u ol',
+                'container': 'div.css-13mho3u ol li',
                 'title': 'li div div a h2::text',
                 'description': 'li div div a p.css-1echdzn::text',
                 'author': 'li div div a div.css-1nqbnmb.e140qd2t0 p',
@@ -165,8 +165,8 @@ list_of_sites = [
         },
         'wanted_list': {
             'case-1': {
-                'container': 'div.component.taxonomy-related-touts.section-related__touts',
-                'title': 'div.taxonomy-tout div.text h2.headline::text',
+                'container': 'div.component.taxonomy-related-touts.section-related__touts div.taxonomy-tout',
+                'title': 'div.text h2.headline::text',
                 'description': 'h3.summary::text',
                 'author': 'span.byline span:first-child::text',
                 'url': ''
@@ -213,10 +213,10 @@ list_of_sites = [
         },
         'wanted_list': {
             'case-1': {
-                'container': 'article div',
-                'title': 'ul li div.w-100.grid div.pr-xs a h3::text',
-                'description': 'ul li div.w-100.grid div.pr-xs p.pt-xs.pb-xs::text',
-                'author': 'ul li div.w-100.grid div.pr-xs span a::text',
+                'container': 'main article div ul.list-hide-bullets li.pb-md.b.bb.gray-darkest',
+                'title': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs a h3::text',
+                'description': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs p.pt-xs.pb-xs::text',
+                'author': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs span a::text',
                 'url': ''
             }
         }
