@@ -16,19 +16,24 @@ export default class Service {
      * Send request to url
      * @param {string} method
      */
-    sendRequest(method) {
+    async sendRequest(method, contentType='application/json') {
         try {
-            let request = new Request(this.url, {method: method})
-            fetch(request)
-                .then(response => {
-                    if(!response.ok) {
-                        console.log('Request failed with status', response.status)
+            let request = new Request(
+                this.url,
+                {
+                    method: method,
+                    headers: {
+                        'Content-Type': contentType
                     }
-                    return response.json()
-                })
-                .then(data => {
-                    return data
-                })
+                }
+            );
+            return fetch(request)
+            .then(response => {
+                if(!response.ok) console.log('Request failed with status', response.status)
+                return response.json()
+            })
+            .then(data => data)
+            .catch(error => console.log(error))
         } catch (error) {
             console.log('ERROR:', error)
         }
@@ -38,7 +43,7 @@ export default class Service {
      * Get result
      * @returns Data
      */
-    getResponse() {
+    async getResponse() {
         // Get response.
         return this.data
     }

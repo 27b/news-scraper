@@ -1,7 +1,7 @@
 from datetime import datetime as dt
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
-
+from sqlalchemy import desc
 
 db = SQLAlchemy()
 
@@ -46,6 +46,7 @@ class PostSchema(Schema):
     description = fields.Str()
     author = fields.Str()
     datetime = fields.Str()
+    newsletter_id = fields.Str()
     
     class Meta:
         ordered = True

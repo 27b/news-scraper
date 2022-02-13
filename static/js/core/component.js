@@ -31,7 +31,6 @@ export default class Component {
      * @param {string} html 
      */
     insert(html) {
-        console.log(html)
         this.HTMLElement.innerHTML += html 
     }
 

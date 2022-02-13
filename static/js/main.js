@@ -2,33 +2,39 @@ import Component from './core/component.js'
 import Service from './core/service.js'
 
 
+const newsletter_icons = [
+    /* Notice */ 'https://upload.wikimedia.org/wikipedia/commons/thu…1200px-Corredor_naranja_cordoba_argentina.svg.png',
+    /* NYTimes */ 'https://yt3.ggpht.com/a/AATXAJyDX6fn6odU9KqLzyz1jmr6Sf2suzpO0z07ofGTew=s900-c-k-c0xffffffff-no-rj-mo',
+    /* Time */ 'https://api.time.com/wp-content/themes/time2014/img/time-logo-og.png',
+    /* WashingtonPost */ 'https://play-lh.googleusercontent.com/JDrO88srYGmqrOeyqtT1al3JQD0IKRS-OO7PDMjETiPuDNgCC45wJF8LIBH-QOcTMTE'
+]
+
+
 let posts = new Component("content-list")
 
-posts.onEvent('load', () => {
-    let service = new Service('http://localhost:5000/api/post/').sendRequest('GET')
-    console.log(service)
-    console.log(service.posts)
-    for (var i = 0; i <= service.posts.length; i++) {
-        console.log(i)
-        postItem = data.posts[i]
-        console.log(postItem)   
-        postComponent = `
+posts.onEvent('load', async () => {
+    let service = new Service('http://localhost:5000/api/post/');
+    let response = await service.sendRequest('GET');
+    let data = await response.posts
+    console.log(data.length)
+
+    for (var i = 0; i <= data.length; i++) {
+        let postItem = data[i] 
+        let postComponent = `
             <a class="content" href="/post/${postItem.id}">
-                <img src="${'hello-world'}">
+                <img src="${newsletter_icons[postItem.newsletter_id]}">
                 <div class="information">
                     <p>${postItem.title}</p>
+                    <p style="font-size:12px;">${postItem.description}</p>
                     <div class="information-atributes">
-                        <div class="key"></div>
+                        <div class="key">${postItem.datetime.substring(0, 9)}</div>
                     </div>
                 </div>
             </a>
         `
-        console.log(postItem)
         posts.insert(postComponent)
-    }
+    }   
 })
-
-console.log(posts)
 
 /*
 

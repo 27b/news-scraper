@@ -6,7 +6,7 @@ from time import sleep
 from sys import exit
 
 
-TIME_FOR_SLEEP = 60 * 5
+TIME_FOR_SLEEP = 60 * 10
 SCRAPER_LIST = list_of_sites
 
 

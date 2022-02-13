@@ -38,5 +38,5 @@ class PostView(MethodView):
             post = Post.query.get_or_404(post_id)
             return post_schema.dump(post)
 
-        posts = Post.query.all()
+        posts = Post.query.order_by(Post.datetime.desc()).limit(50).all()
         return jsonify(_total=len(posts_schema.dump(posts)), posts=posts_schema.dump(posts))
