@@ -9,6 +9,10 @@ const newsletter_icons = [
     /* WashingtonPost */ 'https://play-lh.googleusercontent.com/JDrO88srYGmqrOeyqtT1al3JQD0IKRS-OO7PDMjETiPuDNgCC45wJF8LIBH-QOcTMTE'
 ]
 
+const categories = [
+    null, 'business', 'politics', 'technology', 'science', 'world', 'books', 'style', 'education', 'health', 'sports', 'arts',
+    'television', 'climate', 'automobile'
+]
 
 let posts = new Component("content-list")
 
@@ -18,16 +22,25 @@ posts.onEvent('load', async () => {
     let data = await response.posts
 
     for (var i = 0; i <= data.length; i++) {
-        let postItem = data[i] 
+        let postItem = data[i]
+
+        if (postItem.author != '') {
+            var author = '<div class="key">' + postItem.author + '</div>'
+        } else {
+            var author = ''
+        }
+
         let postComponent = `
             <a class="content" href="/post/${postItem.id}">
                 <img src="${newsletter_icons[postItem.newsletter_id]}">
                 <div class="information">
                     <p>${postItem.title}</p>
-                    <span style="font-size:12px;">${postItem.description}</span>
-                    <!-- <div class="information-atributes">
+                    <span style="font-size:14px;">${postItem.description}</span>
+                    <div class="information-atributes">
+                        <div class="key">${categories[postItem.category_id]}</div>
                         <div class="key">${postItem.datetime.substring(0, 9)}</div>
-                    </div> -->
+                        ${author}
+                    </div>
                 </div>
             </a>
         `

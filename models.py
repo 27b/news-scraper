@@ -47,6 +47,7 @@ class PostSchema(Schema):
     author = fields.Str()
     datetime = fields.Str()
     newsletter_id = fields.Str()
+    category_id = fields.Str()
     
     class Meta:
         ordered = True
