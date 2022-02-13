@@ -58,7 +58,7 @@ class BasicSpider(ISpider):
     def result(self) -> list[dict]:
         """Return the results of the scraper.
 
-        Returns
+        Returns:
             A list of dictionaries.
         """
         return self.results_of_categories

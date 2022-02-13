@@ -1,4 +1,7 @@
-class Service {
+/**
+ * This component is used to create the service logic.
+ */
+export default class Service {
 
     /**
      * Create a service.
@@ -13,12 +16,22 @@ class Service {
      * Send request to url
      * @param {string} method
      */
-    sendRequest(method=null) {
-        fetch(this.url)
-            .then(response => response.json())
-            .then(data => {
-                this.data = data
-            })
+    sendRequest(method) {
+        try {
+            let request = new Request(this.url, {method: method})
+            fetch(request)
+                .then(response => {
+                    if(!response.ok) {
+                        console.log('Request failed with status', response.status)
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    return data
+                })
+        } catch (error) {
+            console.log('ERROR:', error)
+        }
     }
 
     /**

@@ -1,4 +1,7 @@
-class Component {
+/**
+ * This component is used to create the component logic.
+ */
+export default class Component {
     
     /**
      * Create an component.
@@ -11,14 +14,16 @@ class Component {
     }
 
     /**
-     * Add event to component.
-     * @param {string} string 
-     * @param {function} callback 
+     * Add event to component(.
+     * @param {string} string
+     * @param {function} callback
      */
-    onEvent(string, callback){
-        this.HTMLElement.addEventListener(string, () => {
-            callback()
-        })
+    onEvent(event, callback) {
+        if (this.HTMLElement) {
+            this.HTMLElement.addEventListener(event, callback())
+        } else {
+            console.log('ERROR: Element identifier error, the identifier is:', this.identifier)
+        }
     }
     
     /**
@@ -26,6 +31,7 @@ class Component {
      * @param {string} html 
      */
     insert(html) {
+        console.log(html)
         this.HTMLElement.innerHTML += html 
     }
 
