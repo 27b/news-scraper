@@ -8,7 +8,7 @@ export default class Component {
      * @param {string} identifier 
      */
     constructor(identifier) {
-        this.data = {}
+        this.state = {}
         this.identifier = identifier
         this.HTMLElement = document.getElementById(identifier)
     }
