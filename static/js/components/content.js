@@ -29,7 +29,7 @@ Posts.onEvent('load', async () => {
         let postData = data[index]
         let authorHTML = data.author != '' ? '' : '<div class="key">' + postData.author + '</div>'
         let postComponent = `
-            <a id="post-${index}" class="content" href="/post/${postData.id}">
+            <a id="post-${index}" class="content" href="api/post/${postData.id}">
                 <img src="${newsletter_icons[postData.newsletter_id]}">
                 <div class="information">
                     <p>${postData.title}</p>
@@ -47,7 +47,6 @@ Posts.onEvent('load', async () => {
         Posts.state['childs'].push(post)
     }
 })
-
 
 export default { Posts, newsletter_icons, categories };
 

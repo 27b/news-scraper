@@ -1,4 +1,4 @@
-from flask import render_template, jsonify
+from flask import render_template, jsonify, request
 from flask.views import MethodView
 from models import Post, PostSchema
 
@@ -29,7 +29,7 @@ class PostView(MethodView):
             post_id: An integer to search in the database.
 
         Returns:
-            One or more dictionaries with the public values of the Post model.
+            One or more dictionaries with he public values of the Post model.
         """
         post_schema = PostSchema()
         posts_schema = PostSchema(many=True)
@@ -38,5 +38,12 @@ class PostView(MethodView):
             post = Post.query.get_or_404(post_id)
             return post_schema.dump(post)
 
-        posts = Post.query.order_by(Post.datetime.desc()).limit(50).all()
+        title = request.args.get('title')
+        
+        print('Title', title)
+        if title:
+            posts = Post.query.filter(Post.title.match(title)).order_by(Post.datetime.desc()).limit(50).all()
+        else:
+            posts = Post.query.order_by(Post.datetime.desc()).limit(50).all()
+
         return jsonify(_total=len(posts_schema.dump(posts)), posts=posts_schema.dump(posts))

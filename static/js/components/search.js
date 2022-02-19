@@ -14,19 +14,19 @@ document.addEventListener('keydown', async (event) => {
             search.blur()
         }
         else if (event.code == 'Enter') {
-            // This code send request
-            console.log('Sending request.')
-            let service = new Service('http://localhost:5000/api/post/');
-            let response = await service.sendRequest('GET');
+            let service = new Service(`http://localhost:5000/api/post/?title=${search.value}`)
+            let response = await service.sendRequest('GET')
             let data = await response.posts
-            for (let index = 0; index < data.length; index++) {
-                const postData = data[index];
-                // Update element if element != new element
-                if (Posts.state['data'][index] !== postData) {
-                    let authorHTML = data.author != '' ? '' : '<div class="key">' + postData.author + '</div>'
+            console.log(data)
+            console.log(Posts.state)
+            // Update element if index in range of data.length, else delete the element
+            for (var index = 0; index < Posts.state['data'].length; index++) {
+                console.log(index)
+                if (index < data.length) {
+                    let postData = data[index]
+                    let authorHTML = postData.author != '' ? '' : '<div class="key">' + postData.author + '</div>'
                     Posts.state['data'][index] = postData
                     Posts.state['childs'][index].innerHTML = `
-                    <a id="post-${index}" class="content" href="/post/${postData.id}">
                         <img src="${newsletter_icons[postData.newsletter_id]}">
                         <div class="information">
                             <p>${postData.title}</p>
@@ -36,11 +36,18 @@ document.addEventListener('keydown', async (event) => {
                                 <div class="key">${postData.datetime.substring(0, 9)}</div>
                                 ${authorHTML}
                             </div>
-                        </div>
-                    </a>`
+                        </div>`
+                    Posts.state['childs'][index].href = `api/post/${postData.id}`
+                }
+                else {
+                    console.log('Bump')
+                    document.getElementById(`post-${index}`).remove()
+                    Posts.state['data'].splice(0, index.length)
+                    Posts.state['childs'].splice(0, index.length)
                 }
             }
-            search.blur()
+            console.log(Posts.state)
+
         }
         else {
             search.focus()
