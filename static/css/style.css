@@ -199,6 +199,10 @@ body{
 	flex-direction: column;	
 }
 
+.content .information .information-description {
+	font-size: 14px;
+}
+
 .content .information .information-atributes {
 	display: flex;
 	flex-direction: row;

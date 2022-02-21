@@ -17,37 +17,37 @@ document.addEventListener('keydown', async (event) => {
             let service = new Service(`http://localhost:5000/api/post/?title=${search.value}`)
             let response = await service.sendRequest('GET')
             let data = await response.posts
-            console.log(data)
-            console.log(Posts.state)
-            // Update element if index in range of data.length, else delete the element
-            for (var index = 0; index < Posts.state['data'].length; index++) {
-                console.log(index)
-                if (index < data.length) {
-                    let postData = data[index]
-                    let authorHTML = postData.author != '' ? '' : '<div class="key">' + postData.author + '</div>'
-                    Posts.state['data'][index] = postData
-                    Posts.state['childs'][index].innerHTML = `
-                        <img src="${newsletter_icons[postData.newsletter_id]}">
-                        <div class="information">
-                            <p>${postData.title}</p>
-                            <span style="font-size:14px;">${postData.description}</span>
-                            <div class="information-atributes">
-                                <div class="key">${categories[0]}</div>
-                                <div class="key">${postData.datetime.substring(0, 9)}</div>
-                                ${authorHTML}
-                            </div>
-                        </div>`
-                    Posts.state['childs'][index].href = `api/post/${postData.id}`
-                }
-                else {
-                    console.log('Bump')
-                    document.getElementById(`post-${index}`).remove()
-                    Posts.state['data'].splice(0, index.length)
-                    Posts.state['childs'].splice(0, index.length)
-                }
+            
+            // Delete old elements
+            let childrens = Posts.HTMLElement.children.length - 1;
+            for (let index = childrens; index !== 0; index--) {
+                let post = Posts.HTMLElement.children[index]
+                post.remove()
             }
-            console.log(Posts.state)
 
+            // Create new elements
+            for (let index = 0; index < data.length; index++) {
+                if (data.length === 0) {
+                    console.log('Data values index is equal to 0.')
+                    break
+                }
+
+                let postData = data[index]
+                let postComponent = `
+                <a id="post-${index}" class="content" href="api/post/${postData.id}">
+                    <img src="${newsletter_icons[postData.newsletter_id]}">
+                    <div class="information">
+                        <p>${postData.title}</p>
+                        <span class="information-description">${postData.description}</span>
+                        <div class="information-atributes">
+                            <div class="key">${categories[0]}</div>
+                            <div class="key">${postData.datetime.split(' ')[0]}</div>
+                            ${postData.author !== '' ? '' : '<div class="key">' + postData.author + '</div>'}
+                        </div>
+                    </div>
+                </a>`
+                Posts.insert(postComponent)
+            }
         }
         else {
             search.focus()

@@ -17,9 +17,6 @@ export const categories = [
 
 export var Posts = new Component("content-list");
 
-Posts.state['data'] = []
-Posts.state['childs'] = []
-
 Posts.onEvent('load', async () => { 
     let service = new Service('http://localhost:5000/api/post/');
     let response = await service.sendRequest('GET');
@@ -27,51 +24,21 @@ Posts.onEvent('load', async () => {
 
     for (var index = 0; index < data.length; index++) {
         let postData = data[index]
-        let authorHTML = data.author != '' ? '' : '<div class="key">' + postData.author + '</div>'
         let postComponent = `
             <a id="post-${index}" class="content" href="api/post/${postData.id}">
                 <img src="${newsletter_icons[postData.newsletter_id]}">
                 <div class="information">
                     <p>${postData.title}</p>
-                    <span style="font-size:14px;">${postData.description}</span>
+                    <span class="information-description">${postData.description}</span>
                     <div class="information-atributes">
                         <div class="key">${categories[0]}</div>
-                        <div class="key">${postData.datetime.substring(0, 9)}</div>
-                        ${authorHTML}
+                        <div class="key">${postData.datetime.split(' ')[0]}</div>
+                        ${data.author !== '' ? '' : '<div class="key">' + postData.author + '</div>'}
                     </div>
                 </div>
             </a>`
         Posts.insert(postComponent)
-        let post = document.getElementById('post-' + index)
-        Posts.state['data'].push(postData)
-        Posts.state['childs'].push(post)
     }
 })
 
 export default { Posts, newsletter_icons, categories };
-
-/*
-Posts.onEvent('change', () => {
-    let service = new Service('api/post/')
-    posts = service.sendRequest(method='GET')
-    for (i = 0; i < service.data.length; i++) {
-        if (1+2) { // posts.data[i].id != service.data[i].id
-            // Update data
-        }
-        else {
-            postItem = service[i]
-            postComponent = `
-                <a class="content" href="/post/${postItem.id}">
-                    <img src="${2+2}">
-                    <div class="information">
-                        <p>${postItem.title}</p>
-                        <div class="information-atributes">
-                            <div class="key">${postItem.url}</div>
-                        </div>
-                    </div>
-                </a>
-            `
-        }
-    }
-})
-*/
