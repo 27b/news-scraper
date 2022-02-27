@@ -10,6 +10,81 @@ TIME_FOR_SLEEP = 60 * 10
 SCRAPER_LIST = list_of_sites
 
 
+class CrawlerSchema:
+    __instance = None
+
+    def __init__(self, app, db):
+        self.__app = app
+        self.__db = db
+
+    def __call__(cls, *args, **kwargs):
+        if not cls.__instance:
+            instance = super().__call__(*args, **kwargs)
+            cls.__instance = instance
+        return cls.__instance
+
+    def __check_database_status(self) -> bool:
+        '''Checks if the database and the application were instantiated,
+        it also checks if the newsletter exists in the database.'''
+        if not self.__app:
+            print('The application has not been instantiated.')
+            return False
+        
+        if not self.__db:
+            print('The database has not been instantiated.')
+            return False
+    
+        return True
+
+    def __get_categories(self) -> list[Category]:
+        '''Returns a dictionary with all existing categories.'''
+        with self.__app.app_context():
+            query = Category.query.all() 
+            return [C for C in query]
+
+    def __get_newsletters(self) -> list[Newsletter]:
+        '''Returns a dictionary with all existing newsletters'''
+        with self.__app.app_context():
+            query = Newsletter.query.all()
+            return [N for N in query]
+
+    def __save_post_in_database(self, new_post) -> bool:
+        try:
+            self.__db.session.add(new_post)
+            self.__db.session.commit()
+        except Exception as error:
+            print(error)
+            return False
+        else:
+            return True
+
+
+class CrawlerMediator:
+    '''Get data of crawler and apply logic to save data using crawler schema'''
+    schema = CrawlerSchema()
+
+    @classmethod
+    def save_post(cls, new_post) -> bool:
+        if cls.schema.__check_if_post_is_valid():
+            return cls.schema.__save_post_in_database(new_post)
+    
+    @classmethod
+    def check_if_post_is_valid(cls, new_post) -> bool:
+        pass
+
+
+class CrawlerManager:
+    '''Execute Crawler and send data to mediator,'''
+    
+    @classmethod
+    def execute_crawler():
+        pass
+
+    @classmethod
+    def send_data_to_mediator():
+        pass
+
+
 class Crawler:
     """Execute multiple spiders and insert the results in the database."""
     __app = None
