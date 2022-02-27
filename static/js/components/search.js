@@ -10,23 +10,21 @@ document.addEventListener('keydown', async (event) => {
     // key makes a request and the "s" key allows you to access
     // search element if search element is not focused.
     if (document.activeElement === search) {
-        if (event.code === 'Escape' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
-            search.blur()
-        }
-        else if (event.code == 'Enter') {
+        if (event.code === 'Enter') {
             let service = new Service(`http://localhost:5000/api/post/?title=${search.value}`)
             let response = await service.sendRequest('GET')
             let data = await response.posts
-            
-            // Delete old elements
             let childrens = Posts.HTMLElement.children.length - 1;
+            
+            // Step 1: Delete old elements
             for (let index = childrens; index !== 0; index--) {
                 let post = Posts.HTMLElement.children[index]
                 post.remove()
             }
 
-            // Create new elements
+            // Step 2: Create new elements
             for (let index = 0; index < data.length; index++) {
+            
                 if (data.length === 0) {
                     console.log('Data values index is equal to 0.')
                     break
@@ -48,6 +46,9 @@ document.addEventListener('keydown', async (event) => {
                 </a>`
                 Posts.insert(postComponent)
             }
+        }
+        else if (event.code === 'Escape' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+            search.blur()
         }
         else {
             search.focus()
