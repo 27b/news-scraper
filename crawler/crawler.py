@@ -11,7 +11,7 @@ TIME_FOR_SLEEP = 60 * 10
 SCRAPER_LIST = list_of_sites
 
 
-class __CrawlerSchema:
+class CrawlerSchema:
     '''CrawlerSchema is the handler of the database.
     
     Args:
@@ -66,7 +66,7 @@ class __CrawlerSchema:
             False: If an error occurred.
         '''
         try:
-            if self.__check_database_status():
+            if self.check_database_status():
                 with self.__app.app_context():
                     self.__db.session.add(new_post)
                     self.__db.session.commit()
@@ -89,11 +89,13 @@ class CrawlerDataHandler:
     '''
 
     def __init__(self, app, db) -> None:
-        self.schema = __CrawlerSchema(app, db)
-        self.newsletters = [N.name for N in self.schema.get_newsletters()]
-        self.categories = [C.name for C in self.schema.get_categories()]
+        self.schema = CrawlerSchema(app, db)
+        self.newsletters = self.schema.get_newsletters()
+        self.categories = self.schema.get_categories()
+        self.newsletters_name = [N.name for N in self.newsletters]
+        self.categories_name = [C.name for C in self.categories]
 
-    def save_post(cls, new_post: Post) -> bool | None:
+    def save_post(self, new_post: Post) -> bool:
         '''Save Post in database using CrawlerSchema if the post is valid.
 
         Args:
@@ -102,9 +104,8 @@ class CrawlerDataHandler:
         Returns:
             bool: True or false depending on the result of the database. 
         '''
-        if cls.schema.__check_if_post_is_valid(new_post):
-            return cls.schema.__save_post_in_database(new_post)
-    
+        return self.schema.save_post_in_database(new_post)
+        
     def check_if_post_is_valid(self, post: dict) -> Post | bool:
         '''Check if the newsltetter and category of the post is valid.
         
@@ -116,25 +117,34 @@ class CrawlerDataHandler:
             Post: if the post is valid.
             bool: False if category or newsletter is invalid.
         '''
-        if not post.category in self.categories: return False
-        if not post.newsletter in self.newsletters: return False
-        
+        if not post.get('newsletter') in self.newsletters_name: return False
+        if not post.get('category') in self.categories_name: return False
+
         # Next: Change database query for lambda
-        newsletter_query = Newsletter.query.filter_by(name=post.newsletter)
-        category_query = Category.query.filter_by(name=post.category)
-        
+        # Problem 1: Fix the problem of access directly to database using DataHandler and simplify the access of Newsletter/Category name and id.
+        newsletter = None
+        category = None
+
+        for n in self.newsletters:
+            if n.name == post.get('newsletter'):
+                newsletter = n
+                
+        for c in self.categories:
+            if c.name == post.get('category'):
+                category = c
+
         new_post = Post()
         new_post.title = post.get('title')
         new_post.description = post.get('description')
         new_post.author = post.get('author')
         new_post.url = post.get('url')
-        new_post.newsletter_id = newsletter_query.first()
-        new_post.category_id = category_query.first()
+        new_post.newsletter_id = category.id
+        new_post.category_id = newsletter.id
 
         return new_post
 
 
-class Crawler2:
+class Crawler:
     
     @classmethod
     def run_task(cls, app, db) -> None:
@@ -174,6 +184,7 @@ class Crawler2:
             posts.
         '''
         data_handler = CrawlerDataHandler(cls.__app, cls.__db)
+        
         for post in post_list:
             post['newsletter'] = newsletter
             new_post = data_handler.check_if_post_is_valid(post)
@@ -181,7 +192,7 @@ class Crawler2:
                 data_handler.save_post(new_post)
 
 
-class Crawler:
+class CrawlerOld:
     """Execute multiple spiders and insert the results in the database."""
     __app = None
     __database = None
