@@ -31,7 +31,7 @@ Posts.onEvent('load', async () => {
                     <p>${postData.title}</p>
                     <span class="information-description">${postData.description}</span>
                     <div class="information-atributes">
-                        <div class="key">${categories[0]}</div>
+                        <div class="key">${categories[postData.category_id]}</div>
                         <div class="key">${postData.datetime.split(' ')[0]}</div>
                         ${data.author !== '' ? '' : '<div class="key">' + postData.author + '</div>'}
                     </div>
