@@ -1,9 +1,9 @@
 from abc import ABC,  abstractmethod
-from crawler.core.scraper import IScraper
+from crawler.core.extractor import IExtractor
 from multiprocessing import Process, Queue
 
 
-class ISpider(ABC):
+class IExtractorHandler(ABC):
     """High Abstraction of the library of scraping."""
 
     @abstractmethod
@@ -17,13 +17,13 @@ class ISpider(ABC):
         pass
 
 
-class BasicSpider(ISpider):
+class PostHandler(IExtractorHandler):
     """Access each category of the newsletter and in each category access each
     item, within each item you access the link using the provided scraper and
     the result is stored, you can access it using result method.
     """
 
-    def __init__(self, scraper: IScraper):
+    def __init__(self, scraper: IExtractor):
         self.scraper = scraper
         self.results_of_categories = None
 

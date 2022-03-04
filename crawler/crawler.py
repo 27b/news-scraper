@@ -1,9 +1,8 @@
 from crawler.config import list_of_sites
-from crawler.core.scraper import AutoScraperScraper
-from crawler.core.spider import BasicSpider
+from crawler.core.extractor import PostExtractor
+from crawler.core.handler import PostHandler
 from models import Newsletter, Category, Post
 from time import sleep
-from sys import exit
 
 
 TIME_FOR_SLEEP = 60 * 10
@@ -161,7 +160,7 @@ class Crawler:
         while True:
             for newsletter in SCRAPER_LIST:
                 print(f"* NEWSLETTER: {newsletter['name']}")
-                spider = BasicSpider(AutoScraperScraper())
+                spider = PostHandler(PostExtractor())
                 spider.execute_scraper(newsletter)
                 result = spider.result()
                 if result:

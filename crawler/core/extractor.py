@@ -9,7 +9,7 @@ import logging
 logging.getLogger('scrapy').propagate = False
 
 
-class IScraper(ABC):
+class IExtractor(ABC):
     """Wrap the scraping module to keep a minimum coupling."""
 
     @abstractmethod
@@ -18,7 +18,7 @@ class IScraper(ABC):
         pass
 
 
-class AutoScraperScraper(IScraper):
+class PostExtractor(IExtractor):
     """Interface of AutoScraper module."""
 
     @classmethod
@@ -75,7 +75,7 @@ class SimpleScrapyScraper(Spider):
 
                     domain_fragment = site_url[0:8]
                     url = content.css(cls.values['url']).get()
-
+                    
                     # If the url is complete
                     if domain_fragment in url or 'http' in url:
                         pass
