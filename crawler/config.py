@@ -219,7 +219,7 @@ list_of_sites = [
                 'title': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs a h3::text',
                 'description': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs p.pt-xs.pb-xs::text',
                 'author': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs span a::text',
-                'url': ''
+                'url': 'li.pb-md.b.bb.gray-darkest div.w-100.grid div.pr-xs a::attr(href)'
             }
         }
     }
