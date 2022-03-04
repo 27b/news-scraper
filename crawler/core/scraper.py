@@ -63,10 +63,46 @@ class SimpleScrapyScraper(Spider):
             for content in container:
                 title = content.css(cls.values['title']).get()
                 description = content.css(cls.values['description']).get()
+                author_list = content.css(cls.values['author']).getall()   
+                author_quantity = len(author_list)
 
-                author_list = content.css(cls.values['author']).getall()    
-                author_quantity = len(author_list) 
+                # Get url (href attr) of post
+                if cls.values['url'] != '':
+                    site_url = cls.values.get('config_base_url')
 
+                    if not site_url:
+                        site_url = cls.start_urls[0]
+
+                    domain_fragment = site_url[0:8]
+                    url = content.css(cls.values['url']).get()
+
+                    # If the url is complete
+                    if domain_fragment in url or 'http' in url:
+                        pass
+                    
+                    # If the site url end in / and the url start in /
+                    elif site_url[-1] == '/' and url[0] == '/':
+                        url = site_url + url[1:]
+                    
+                    # If the site url end in / and the url not start in /
+                    elif site_url[-1] == '/' and url[0] != '/':
+                        site_url_length = len(site_url)
+                        url = site_url[:site_url_length - 1] + url
+                    
+                    # If the site url not end in / and the url end in /
+                    elif site_url[-1] != '/' and url[0] == '/':
+                        url = site_url + url
+
+                    # If the site url not end in / and the url not end in /
+                    elif site_url[-1] != '/' and url[0] != '/':
+                        url = site_url + '/' + url
+                    
+                    else:
+                        print('ERROR URL:', url)
+                else:
+                    url = ''
+
+                # Check if there is more than one author
                 if author_quantity == 1:
                     author = str(content.css(cls.values['author']).get())    
                 if author_quantity > 1:
@@ -80,15 +116,15 @@ class SimpleScrapyScraper(Spider):
 
                 author = compile(r'<[^>]+>').sub('', author)
 
-                if 'By' in author:
-                    author = author.split('By')[1].strip()
+                if 'By' in author: author = author.split('By')[1].strip()
                 
                 post = {
                     'title': title.strip(),
                     'description': description.strip(),
                     'author': author,
                     'datetime': dt.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
-                    'category': cls.category
+                    'category': cls.category,
+                    'url': url
                 }
                 print(post)
                 cls.result.append(post)

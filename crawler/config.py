@@ -103,11 +103,12 @@ list_of_sites = [
         },
         'wanted_list': {
             'case-1': {
+                'config_base_url': 'https://www.nytimes.com/',
                 'container': 'div.css-13mho3u ol li',
                 'title': 'li div div a h2::text',
                 'description': 'li div div a p.css-1echdzn::text',
                 'author': 'li div div a div.css-1nqbnmb.e140qd2t0 p',
-                'url': ''
+                'url': 'li div div a::attr(href)'
             }
         }
     },
@@ -165,11 +166,12 @@ list_of_sites = [
         },
         'wanted_list': {
             'case-1': {
+                'config_base_url': 'https://time.com/',
                 'container': 'div.component.taxonomy-related-touts.section-related__touts div.taxonomy-tout',
                 'title': 'div.text h2.headline::text',
                 'description': 'h3.summary::text',
                 'author': 'span.byline span:first-child::text',
-                'url': ''
+                'url': 'div a::attr(href)'
             }
         }
     },
