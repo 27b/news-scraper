@@ -32,7 +32,7 @@ document.addEventListener('keydown', async (event) => {
 
                 let postData = data[index]
                 let postComponent = `
-                <a id="post-${index}" class="content" href="api/post/${postData.id}">
+                <a id="post-${index}" class="content" href="${postData.url}">
                     <img src="${newsletter_icons[postData.newsletter_id]}">
                     <div class="information">
                         <p>${postData.title}</p>

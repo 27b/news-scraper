@@ -48,6 +48,7 @@ class PostSchema(Schema):
     datetime = fields.Str()
     newsletter_id = fields.Str()
     category_id = fields.Str()
+    url = fields.Str()
     
     class Meta:
         ordered = True

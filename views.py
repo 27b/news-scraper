@@ -39,8 +39,7 @@ class PostView(MethodView):
             return post_schema.dump(post)
 
         title = request.args.get('title')
-        
-        print('Title', title)
+
         if title:
             posts = Post.query.filter(Post.title.match(title)).order_by(Post.datetime.desc()).limit(50).all()
         else:
