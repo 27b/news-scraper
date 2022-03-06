@@ -8,7 +8,7 @@ Blobs.HTMLElement.searchText = ''
 
 async function getBlobs(searchText) {
     let url = 'http://localhost:5000/api/blob/'
-    if (searchText) url = `http://localhost:5000/api/blob/?words=${search}`
+    if (searchText) url = `http://localhost:5000/api/blob/?words=${searchText}`
     let service = new Service(url)
     let response = await service.sendRequest('GET')
     let data = await response.blobs

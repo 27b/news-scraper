@@ -41,9 +41,16 @@ class PostView(MethodView):
         title = request.args.get('title')
 
         if title:
-            posts = Post.query.filter(Post.title.match(title)).order_by(Post.datetime.desc()).limit(50).all()
+            posts = Post.query \
+                .filter(Post.title.ilike(title)) \
+                .order_by(Post.datetime.desc()) \
+                .limit(50) \
+                .all()
         else:
-            posts = Post.query.order_by(Post.datetime.desc()).limit(50).all()
+            posts = Post.query \
+                        .order_by(Post.datetime.desc()) \
+                        .limit(50) \
+                        .all()
 
         return jsonify(_total=len(posts_schema.dump(posts)), posts=posts_schema.dump(posts))
 
