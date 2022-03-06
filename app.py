@@ -5,7 +5,7 @@ from multiprocessing import Process
 from crawler.crawler import Crawler
 from models import db, Newsletter, Category
 from sqlalchemy import create_engine, inspect
-from views import IndexView, PostView
+from views import BlobView, IndexView, PostView
 from dotenv import load_dotenv
 from os import getenv
 
@@ -30,6 +30,7 @@ ma = Marshmallow(app)
 app.add_url_rule('/', view_func=IndexView.as_view('index'))
 app.add_url_rule('/api/post/', view_func=PostView.as_view('posts'))
 app.add_url_rule('/api/post/<int:post_id>', view_func=PostView.as_view('post'))
+app.add_url_rule('/api/blob/', view_func=BlobView.as_view('blobs'))
 
 daemon = Process(target=Crawler.run_task, args=(app, db))
 

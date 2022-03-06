@@ -46,3 +46,17 @@ class PostView(MethodView):
             posts = Post.query.order_by(Post.datetime.desc()).limit(50).all()
 
         return jsonify(_total=len(posts_schema.dump(posts)), posts=posts_schema.dump(posts))
+
+
+class BlobView(MethodView):
+    """Returns post data by id."""
+
+    @staticmethod
+    def get() -> dict:
+        words = request.args.get('words')
+        if words:
+            blobs = str(words).split(' ') if words else []
+        else:
+            recommendations = ['Example', 'of', 'best', 'post', 'mock']
+            blobs = recommendations
+        return jsonify(blobs=blobs)
