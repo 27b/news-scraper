@@ -1,4 +1,5 @@
 import Service from '../core/service.js'
+import { Blobs } from './blobs.js'
 import { Posts, newsletter_icons, categories } from './content.js'
 
 
@@ -16,6 +17,8 @@ document.addEventListener('keydown', async (event) => {
             let data = await response.posts
             let childrens = Posts.HTMLElement.children.length - 1;
             
+            Blobs.sendWords(search.value)
+
             // Step 1: Delete old elements
             for (let index = childrens; index !== 0; index--) {
                 let post = Posts.HTMLElement.children[index]

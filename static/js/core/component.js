@@ -8,9 +8,9 @@ export default class Component {
      * @param {string} identifier 
      */
     constructor(identifier) {
-        this.state = {}
         this.identifier = identifier
         this.HTMLElement = document.getElementById(identifier)
+        this.HTMLElement.state = {}
     }
 
     /**
