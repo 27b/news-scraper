@@ -66,8 +66,13 @@ class CrawlerSchema:
         try:
             if self.check_database_status():
                 with self.__app.app_context():
-                    self.__db.session.add(new_post)
-                    self.__db.session.commit()
+                    validation = new_post.is_valid()
+                    if validation[0]:
+                        self.__db.session.add(new_post)
+                        self.__db.session.commit()
+                    else:
+                        # print(validation[1]) # Use logger here.
+                        return False
             else:
                 return False
 
