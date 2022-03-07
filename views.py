@@ -1,6 +1,7 @@
 from flask import render_template, jsonify, request
 from flask.views import MethodView
 from models import Post, PostSchema
+from sqlalchemy.sql.operators import ilike_op
 
 
 class IndexView(MethodView):
@@ -42,7 +43,7 @@ class PostView(MethodView):
 
         if title:
             posts = Post.query \
-                .filter(Post.title.ilike(title)) \
+                .filter(ilike_op(Post.title, f'%{title}%')) \
                 .order_by(Post.datetime.desc()) \
                 .limit(50) \
                 .all()
